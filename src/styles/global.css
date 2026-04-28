@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography"; /* ← この1行を追加します！ */
+
 @theme {
   --font-body: "Noto Sans JP", sans-serif;
 }
