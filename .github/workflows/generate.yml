@@ -1,0 +1,29 @@
+name: Generate Article with AI
+
+# いつこのプログラムを動かすか
+on:
+  workflow_dispatch: # GitHubの画面から手動で「今すぐ書け！」とボタンを押せるようにします
+  schedule:
+    - cron: '0 0 * * *' # 毎日朝9時に自動実行する設定（※日本時間は+9時間です）
+
+jobs:
+  generate-and-post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: コードを取得
+        uses: actions/checkout@v4
+
+      - name: Node.jsを準備
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Geminiのパッケージをインストール
+        run: npm install @google/generative-ai
+
+      - name: 記事生成プログラムを実行！
+        env: # 金庫から鍵を取り出してプログラムに渡します
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+        run: node scripts/generate.mjs
