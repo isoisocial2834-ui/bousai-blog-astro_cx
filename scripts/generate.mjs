@@ -5,7 +5,7 @@ async function main() {
 
   // 1. 金庫からGeminiの鍵を取り出して準備
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-3.1-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
   // 2. Geminiへの指示書（プロンプト）
   const prompt = `
