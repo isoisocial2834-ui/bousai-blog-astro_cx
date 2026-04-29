@@ -34,7 +34,7 @@ async function main() {
 
   // 4. microCMSへ送信（入稿）する
   console.log("📝 microCMSへ入稿しています...");
-  const response = await fetch(`https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/blogs`, {
+  const response = await fetch(`https://${process.env.MICROCMS_SERVICE_DOMAIN}.microcms.io/api/v1/blog`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
