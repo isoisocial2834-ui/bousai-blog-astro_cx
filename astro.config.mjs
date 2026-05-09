@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import vercel from "@astrojs/vercel";
 
 export default defineConfig({
-  site: "http://localhost:4321/",
+  site: "https://bousai-blog-astro-cx.vercel.app",
   output: "server",
   adapter: vercel(),
   vite: {
