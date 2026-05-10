@@ -110,10 +110,27 @@ blog.content = html;
     )
   }
 
-  {/* 記事の本文を表示する大事な行を復活させました */}
+  {/* 記事の本文を表示するエリア */}
   <div set:html={blog.content} class="entry-content prose max-w-none" />
 
-  {/* バリューコマースのエンジン */}
-  <script is:inline type="text/javascript" src="https://mlb.valuecommerce.com/mylinkbox.js" async></script>
+  {/* バリューコマース MyLinkBox 強制起動スクリプト */}
+  <script is:inline>
+    function loadMyLinkBox() {
+      if (!document.getElementById('vc-mlb-script')) {
+        const s = document.createElement('script');
+        s.id = 'vc-mlb-script';
+        s.type = 'text/javascript';
+        s.src = 'https://mlb.valuecommerce.com/mylinkbox.js';
+        s.async = true;
+        s.onload = () => { if(window.VC_MLB) window.VC_MLB.init(); };
+        document.head.appendChild(s);
+      } else if (window.VC_MLB) {
+        window.VC_MLB.init();
+      }
+    }
+    // 読み込み完了時と、念のため2秒後に再実行
+    window.addEventListener('load', loadMyLinkBox);
+    setTimeout(loadMyLinkBox, 2000); 
+  </script>
 
 </article>
