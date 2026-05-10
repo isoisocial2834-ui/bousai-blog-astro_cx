@@ -107,6 +107,15 @@ blog.content = html;
           })}
         </ul>
       </aside>
+
+<script is:inline>
+  // ページが読み込まれたら、MyLinkBoxのエンジンを強制的に再起動させる
+  window.onload = function() {
+    if (window.VC_MLB) {
+      window.VC_MLB.init();
+    }
+  };
+</script>
     )
   }
 
