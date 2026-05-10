@@ -109,15 +109,20 @@ blog.content = html;
       </aside>
 
 <script is:inline>
-  // ページが読み込まれたら、MyLinkBoxのエンジンを強制的に再起動させる
-  window.onload = function() {
-    if (window.VC_MLB) {
-      window.VC_MLB.init();
-    }
-  };
-</script>
-    )
-  }
+  // 1. エンジン本体を読み込む（httpsを明記）
+  (function() {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = 'https://mlb.valuecommerce.com/mylinkbox.js';
+    s.async = true;
+    document.head.appendChild(s);
 
-  <div set:html={blog.content} class="entry-content prose max-w-none" />
+    // 2. 記事が読み込まれた後に、もう一度「箱」を探して表示させる
+    s.onload = function() {
+      if (window.VC_MLB && typeof window.VC_MLB.init === 'function') {
+        window.VC_MLB.init();
+      }
+    };
+  })();
+</script>
 </article>
