@@ -82,9 +82,9 @@ blog.content = html;
 
   {
     toc.length > 0 && (
-      <aside class="mb-8 p-4 border border-gray-200 bg-gray-50 rounded-md shadow-sm">
+      <aside class="mb-8 p-4 border border-gray-200 bg-gray-50 rounded-md shadow-sm text-sm">
         <h2 class="text-lg font-semibold text-gray-700 mb-2 mt-0">目次</h2>
-        <ul class="space-y-1 text-sm text-gray-600 mb-0 pl-0">
+        <ul class="space-y-1 text-gray-600 mb-0 pl-0">
           {toc.map((item) => {
             const levelClass =
               {
@@ -107,6 +107,13 @@ blog.content = html;
           })}
         </ul>
       </aside>
+    )
+  }
 
-<script is:inline type="text/javascript" src="https://mlb.valuecommerce.com/mylinkbox.js" async></script>
+  {/* 記事の本文を表示する大事な行を復活させました */}
+  <div set:html={blog.content} class="entry-content prose max-w-none" />
+
+  {/* バリューコマースのエンジン */}
+  <script is:inline type="text/javascript" src="https://mlb.valuecommerce.com/mylinkbox.js" async></script>
+
 </article>
