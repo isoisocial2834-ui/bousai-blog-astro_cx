@@ -52,102 +52,28 @@ if (blog.content) {
   html = transformedHtml;
   toc = data.toc;
 
-  // ▼ ここから追加：魔法の「すり替え」コード ▼
-  // 本文の中に [AD] という文字があり、かつ product_card にコードが入力されている場合
-  if (blog.product_card) {
-    // リッチエディタの仕様上 <p> で囲まれるので、<p>[AD]</p> ごとHTMLにすり替える
-    html = html.replace('<p>[AD]</p>', blog.product_card);
-    // 念のため、<p> がないパターンもすり替える
-    html = html.replace('[AD]', blog.product_card);
-  }
-  // ▲ ここまで追加 ▲
+  // ▼ 複数広告（ショートコード）のすり替え処理 ▼
+  // microCMSで作成したフィールドIDと、本文で使う記号を紐付けます
+  const adSlots = [
+    { tag: '[AD1]', content: blog.ad_1 },
+    { tag: '[AD2]', content: blog.ad_2 },
+    { tag: '[AD3]', content: blog.ad_3 },
+    // 枠を増やした場合はここに { tag: '[AD4]', content: blog.ad_4 } と足すだけです
+  ];
+
+  // 記事の中に [AD〇] があれば、それぞれ対応するHTMLにすり替える
+  adSlots.forEach(ad => {
+    if (ad.content) {
+      // リッチエディタの <p> タグごと消し去る
+      html = html.replace(`<p>${ad.tag}</p>`, ad.content);
+      // <p> がついていない場合の念のための処理
+      html = html.replace(ad.tag, ad.content);
+    }
+  });
+  // ▲ ここまで ▲
 }
 
 blog.content = html;
 ---
 
 <article class="prose max-w-none">
-  <h1 class="text-3xl font-medium mb-3 leading-normal">{blog.title}</h1>
-
-  <p class="mb-4">
-    <Date date={blog.publishedAt || blog.createdAt} />
-  </p>
-
-  <div class="flex flex-wrap gap-2 mb-8">
-    {
-      blog.category?.length > 0 ? (
-        blog.category.map((cat: Category) => (
-          <a
-            href={`/category/${cat.id}`}
-            class="category bg-gray-600 text-white px-3 py-1 rounded-full text-xs hover:bg-gray-700 no-underline transition"
-          >
-            {cat.name}
-          </a>
-        ))
-      ) : (
-        <span class="text-gray-400 text-xs">No Category</span>
-      )
-    }
-  </div>
-
-  {
-    toc.length > 0 && (
-      <aside class="mb-8 p-4 border border-gray-200 bg-gray-50 rounded-md shadow-sm text-sm">
-        <h2 class="text-lg font-semibold text-gray-700 mb-2 mt-0">目次</h2>
-        <ul class="space-y-1 text-gray-600 mb-0 pl-0">
-          {toc.map((item) => {
-            const levelClass =
-              {
-                2: "ml-3",
-                3: "ml-6",
-              }[item.level] ?? "";
-
-            return (
-              <li
-                class={`pl-4 list-none border-l-2 border-gray-300 ${levelClass}`}
-              >
-                <a
-                  href={`#${item.id}`}
-                  class="block font-normal no-underline hover:text-blue-500 transition"
-                >
-                  {item.text}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </aside>
-    )
-  }
-
-  {/* 1. リッチエディタの記事本文を表示するエリア */}
-  <div set:html={blog.content} class="entry-content prose max-w-none" />
-
-  {/* 2. カスタムフィールドの商品紹介カードを表示するエリア */}
-  {
-    blog.product_card && (
-      <div set:html={blog.product_card} />
-    )
-  }
-
-  {/* バリューコマース MyLinkBox 強制起動スクリプト（もしValueCommerceを使う時のために残しています） */}
-  <script is:inline>
-    function loadMyLinkBox() {
-      if (!document.getElementById('vc-mlb-script')) {
-        const s = document.createElement('script');
-        s.id = 'vc-mlb-script';
-        s.type = 'text/javascript';
-        s.src = 'https://mlb.valuecommerce.com/mylinkbox.js';
-        s.async = true;
-        s.onload = () => { if(window.VC_MLB) window.VC_MLB.init(); };
-        document.head.appendChild(s);
-      } else if (window.VC_MLB) {
-        window.VC_MLB.init();
-      }
-    }
-    // 読み込み完了時と、念のため2秒後に再実行
-    window.addEventListener('load', loadMyLinkBox);
-    setTimeout(loadMyLinkBox, 2000); 
-  </script>
-
-</article>
