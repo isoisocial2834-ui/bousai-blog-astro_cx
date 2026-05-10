@@ -110,10 +110,17 @@ blog.content = html;
     )
   }
 
-  {/* 記事の本文を表示するエリア */}
+  {/* 1. リッチエディタの記事本文を表示するエリア */}
   <div set:html={blog.content} class="entry-content prose max-w-none" />
 
-  {/* バリューコマース MyLinkBox 強制起動スクリプト */}
+  {/* 2. カスタムフィールドの商品紹介カードを表示するエリア */}
+  {
+    blog.product_card && (
+      <div set:html={blog.product_card} />
+    )
+  }
+
+  {/* バリューコマース MyLinkBox 強制起動スクリプト（もしValueCommerceを使う時のために残しています） */}
   <script is:inline>
     function loadMyLinkBox() {
       if (!document.getElementById('vc-mlb-script')) {
