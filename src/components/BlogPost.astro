@@ -50,12 +50,11 @@ if (blog.content) {
 }
 blog.content = html;
 
-// 関連記事を取得（同じカテゴリ・自分自身を除く・最大3件）
 const categoryId = blog.category?.[0]?.id;
 let relatedBlogs: any[] = [];
 if (categoryId) {
   const { contents } = await getBlogList({
-    filters: `category[contains]${categoryId}`,
+    filters: "category[contains]" + categoryId,
     limit: 4,
   });
   relatedBlogs = contents.filter((b) => b.id !== blog.id).slice(0, 3);
@@ -80,7 +79,7 @@ if (categoryId) {
       blog.category?.length > 0 ? (
         blog.category.map((cat: Category) => (
           
-            href={`/category/${cat.id}`}
+            href={"/category/" + cat.id}
             class="category bg-gray-600 text-white px-3 py-1 rounded-full text-xs hover:bg-gray-700 no-underline transition"
           >
             {cat.name}
@@ -97,17 +96,11 @@ if (categoryId) {
         <h2 class="text-lg font-semibold text-gray-700 mb-2 mt-0">目次</h2>
         <ul class="space-y-1 text-gray-600 mb-0 pl-0">
           {toc.map((item) => {
-            const levelClass =
-              {
-                2: "ml-3",
-                3: "ml-6",
-              }[item.level] ?? "";
+            const levelClass = item.level === 2 ? "ml-3" : item.level === 3 ? "ml-6" : "";
             return (
-              <li
-                class={`pl-4 list-none border-l-2 border-gray-300 ${levelClass}`}
-              >
+              <li class={"pl-4 list-none border-l-2 border-gray-300 " + levelClass}>
                 
-                  href={`#${item.id}`}
+                  href={"#" + item.id}
                   class="block font-normal no-underline hover:text-blue-500 transition"
                 >
                   {item.text}
@@ -120,7 +113,6 @@ if (categoryId) {
     )
   }
   <div set:html={blog.content} class="entry-content prose max-w-none" />
-
   {
     relatedBlogs.length > 0 && (
       <div class="not-prose mt-12 border-t border-gray-200 pt-8">
@@ -129,7 +121,7 @@ if (categoryId) {
           {relatedBlogs.map((related) => (
             <li class="list-none">
               
-                href={`/blog/${related.id}`}
+                href={"/blog/" + related.id}
                 class="flex items-start gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition no-underline group"
               >
                 {related.thumbnail && (
