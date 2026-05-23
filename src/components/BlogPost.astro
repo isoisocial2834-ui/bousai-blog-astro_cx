@@ -78,7 +78,7 @@ if (categoryId) {
     {
       blog.category?.length > 0 ? (
         blog.category.map((cat: Category) => (
-          
+          <a
             href={"/category/" + cat.id}
             class="category bg-gray-600 text-white px-3 py-1 rounded-full text-xs hover:bg-gray-700 no-underline transition"
           >
@@ -97,9 +97,10 @@ if (categoryId) {
         <ul class="space-y-1 text-gray-600 mb-0 pl-0">
           {toc.map((item) => {
             const levelClass = item.level === 2 ? "ml-3" : item.level === 3 ? "ml-6" : "";
+            const liClass = "pl-4 list-none border-l-2 border-gray-300 " + levelClass;
             return (
-              <li class={"pl-4 list-none border-l-2 border-gray-300 " + levelClass}>
-                
+              <li class={liClass}>
+                <a
                   href={"#" + item.id}
                   class="block font-normal no-underline hover:text-blue-500 transition"
                 >
@@ -120,7 +121,7 @@ if (categoryId) {
         <ul class="space-y-4 pl-0">
           {relatedBlogs.map((related) => (
             <li class="list-none">
-              
+              <a
                 href={"/blog/" + related.id}
                 class="flex items-start gap-4 p-4 rounded-lg border border-gray-200 hover:border-blue-400 hover:bg-blue-50 transition no-underline group"
               >
