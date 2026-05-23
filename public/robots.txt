@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bousai-blog-astro-cx.vercel.app/sitemap-index.xml
